@@ -149,3 +149,37 @@ docker compose up --build -d
 Note: During the submission fix we updated the `Dockerfile` to tolerate peer dependency resolution in a clean build by using `npm install --legacy-peer-deps`. The repository's `redux-version/package.json` also bumps `@testing-library/dom` to a compatible version to avoid ERESOLVE errors during CI/docker builds.
 
 If you prefer local development for each implementation, run the `npm install` and `npm run dev` steps shown earlier under each folder.
+
+## Git workflow for submission
+
+Suggested small, meaningful commit strategy for submission (example):
+
+```bash
+# make a focused change
+git add path/to/file
+git commit -m "fix: small bug in CartSidebar render" 
+
+# update docs
+git add README.md
+git commit -m "docs: clarify Docker instructions"
+
+# final PR-ready commit
+git add .
+git commit -m "chore: final project submission"
+```
+
+To push your local repository to the submission GitHub repo you provided, add it as a remote and push (you will need push access and authentication):
+
+```bash
+git remote add submission https://github.com/DuvvuLakshmiPrasanna/React-state-management-comparison.git
+git push submission HEAD:main
+```
+
+If you prefer to open a pull request instead, push to a new branch and create the PR from the GitHub web UI:
+
+```bash
+git checkout -b submission-final
+git push submission submission-final
+```
+
+Note: pushing requires valid GitHub credentials (HTTPS or SSH); if the push fails with authentication, use a personal access token or configure SSH keys.
