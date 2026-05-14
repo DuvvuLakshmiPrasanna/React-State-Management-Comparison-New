@@ -135,3 +135,17 @@ Before final submission, verify the following items are present and complete:
 - Quick manual UI checks: add-to-cart, theme switcher, and no console errors in production build.
 
 If you want, I can run these checks and produce a short verification report.
+
+## Run (production) — Docker Compose
+
+To build and serve the production build (Redux Toolkit app) via Docker Compose:
+
+```bash
+docker compose up --build -d
+
+# then view at http://localhost:8080 (or the port in docker-compose.yml)
+```
+
+Note: During the submission fix we updated the `Dockerfile` to tolerate peer dependency resolution in a clean build by using `npm install --legacy-peer-deps`. The repository's `redux-version/package.json` also bumps `@testing-library/dom` to a compatible version to avoid ERESOLVE errors during CI/docker builds.
+
+If you prefer local development for each implementation, run the `npm install` and `npm run dev` steps shown earlier under each folder.
