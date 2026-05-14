@@ -157,7 +157,7 @@ Suggested small, meaningful commit strategy for submission (example):
 ```bash
 # make a focused change
 git add path/to/file
-git commit -m "fix: small bug in CartSidebar render" 
+git commit -m "fix: small bug in CartSidebar render"
 
 # update docs
 git add README.md
