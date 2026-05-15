@@ -30,7 +30,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: redux-version/package-lock.json
+          # Removed cache-dependency-path because the path resolution caused caching failures
 
       - name: Install dependencies
         working-directory: redux-version
