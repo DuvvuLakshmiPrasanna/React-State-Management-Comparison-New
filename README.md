@@ -79,7 +79,7 @@ This repository includes a GitHub Actions workflow that publishes the Redux Tool
 How to use it:
 
 1. Push the repository to GitHub.
-2. In the repository settings, enable GitHub Pages and select the `gh-pages` branch as the source.
+2. In the repository settings, enable GitHub Pages and set the source to `GitHub Actions`.
 3. Open the Actions tab and run the `Deploy Redux Toolkit app to GitHub Pages` workflow, or push to `main` and let the workflow deploy automatically.
 
 The workflow builds `redux-version` with the correct GitHub Pages base path and publishes the generated `dist/` folder. The live site will be available at `https://<your-username>.github.io/react-state-management-comparison/`.
