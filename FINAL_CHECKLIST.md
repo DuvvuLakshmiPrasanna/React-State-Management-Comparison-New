@@ -78,7 +78,15 @@ If Docker fails to connect, see README.md "Docker troubleshooting".
 - Confirm render counters change during interactions
 - Take the profiler screenshots and ensure they are in `profiling/`
 
-7. Commit and push
+7. Verify GitHub Pages deployment
+
+```powershell
+# Check that the site is deployed at:
+# https://duvvulakshmiprasanna.github.io/React-State-Management-Comparison-New/
+# The Redux Toolkit app should load correctly with all functionality working
+```
+
+8. Commit and push
 
 ```powershell
 git status
@@ -87,4 +95,4 @@ git commit -m "Prepare final submission: build/tests verified, docs updated"
 git push
 ```
 
-Good luck — once Docker is confirmed on your machine, this repository is ready to submit.
+Good luck — once Docker is confirmed on your machine and GitHub Pages is live, this repository is ready to submit.
