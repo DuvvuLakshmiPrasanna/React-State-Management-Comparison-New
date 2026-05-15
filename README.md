@@ -26,6 +26,22 @@ The goal is to compare render behavior, bundle impact, boilerplate, and debuggin
 - npm 10 or newer
 - Docker and Docker Compose for the production container
 
+## Deployment
+
+### GitHub Pages
+
+This repository is automatically deployed to GitHub Pages via GitHub Actions. The Redux Toolkit version is built and deployed whenever changes are pushed to the `main` branch.
+
+**Live Site:** https://duvvulakshmiprasanna.github.io/React-State-Management-Comparison-New/
+
+The deployment workflow:
+
+1. Detects push to main branch
+2. Installs dependencies with `npm ci --legacy-peer-deps`
+3. Builds the Redux Toolkit app with `npm run build`
+4. Uploads the `dist` folder to GitHub Pages
+5. Deploys automatically
+
 ## Run Locally
 
 Each implementation is self-contained and can be installed and run independently.
