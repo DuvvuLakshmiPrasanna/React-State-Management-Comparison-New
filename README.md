@@ -1,34 +1,34 @@
 # React State Management Comparison
 
-This repository contains three runnable React applications that implement the same shopping cart UI with different state management approaches:
+This repository contains three runnable versions of the same shopping cart app, each built with a different state management approach:
 
 - React Context API + useReducer
 - Zustand
 - Redux Toolkit
 
-The goal is to compare render behavior, bundle impact, developer experience, and debugging ergonomics.
+The goal is to compare render behavior, bundle impact, boilerplate, and debugging ergonomics under the same UI and interaction flow.
 
-## Repository Layout
+## What Is Included
 
-- `context-version/naive-context` - single Context provider baseline
-- `context-version/optimized-context` - split Context providers
-- `zustand-version` - single Zustand store with selectors
-- `redux-version` - Redux Toolkit slices with React-Redux hooks
-- `profiling/` - React DevTools Profiler screenshots
-- `bundle-analysis/` - bundle visualizer screenshots
-- `RESULTS.md` - benchmark summary and decision guide
-- `Dockerfile` and `docker-compose.yml` - containerized production build for the Redux Toolkit app
-- `.env.example` - documented environment variables
+- `context-version/naive-context` for the single-provider Context baseline.
+- `context-version/optimized-context` for the split-provider Context optimization.
+- `zustand-version` for the selector-based Zustand implementation.
+- `redux-version` for the Redux Toolkit implementation.
+- `profiling/` for React DevTools Profiler screenshots.
+- `bundle-analysis/` for bundle visualizer screenshots.
+- `RESULTS.md` for the benchmark table and decision guide.
+- `Dockerfile` and `docker-compose.yml` for a production container build of the Redux Toolkit app.
+- `.env.example` for documented environment variables.
 
-## Requirements
+## Prerequisites
 
-- Node.js 20+ recommended
-- npm 10+
-- Docker and Docker Compose if you want the containerized build
+- Node.js 20 or newer
+- npm 10 or newer
+- Docker and Docker Compose for the production container
 
-## Install and Run
+## Run Locally
 
-Each implementation is self-contained and can be installed independently.
+Each implementation is self-contained and can be installed and run independently.
 
 ### Context API - Naive
 
@@ -62,124 +62,63 @@ npm install
 npm run dev
 ```
 
-## Benchmark Flow
+## Docker
 
-The applications expose render counters on the required components in development mode using `data-testid="render-count"`.
+The root Docker setup builds the Redux Toolkit app in a multi-stage image and serves the production assets with Nginx.
 
-Recommended test flow:
+```bash
+docker compose up --build -d
+```
+
+The app is exposed on port `8080` and the container includes a healthcheck that verifies the Nginx server is responding.
+
+## GitHub Pages Deployment
+
+This repository includes a GitHub Actions workflow that publishes the Redux Toolkit app to GitHub Pages.
+
+How to use it:
+
+1. Push the repository to GitHub.
+2. In the repository settings, enable GitHub Pages and select the `gh-pages` branch as the source.
+3. Open the Actions tab and run the `Deploy Redux Toolkit app to GitHub Pages` workflow, or push to `main` and let the workflow deploy automatically.
+
+The workflow builds `redux-version` with the correct GitHub Pages base path and publishes the generated `dist/` folder. The live site will be available at `https://<your-username>.github.io/react-state-management-comparison/`.
+
+## Profiling Workflow
+
+Use the same interaction pattern across all implementations when comparing render behavior:
 
 1. Open the app in development mode.
-2. Start React DevTools Profiler and enable "Record why each component rendered".
-3. Click "Add to cart" on the first product 10 times.
-4. Stop profiling and capture a screenshot.
-5. Record the render counters for Header, ProductListPage, ProductCard, CartSidebar, and CartItem.
+2. Open React DevTools and enable the Profiler option to record why each component rendered.
+3. Click Add to Cart on the first product 10 times.
+4. Stop profiling and capture the flame graph screenshot.
+5. Record the render counters from Header, ProductListPage, ProductCard, CartSidebar, and CartItem.
 
-## Screenshots
+## Artifacts
 
-Profiler:
+Profiler screenshots:
 
 - [Context optimized profile](profiling/context-optimized-profile.png)
 - [Zustand profile](profiling/zustand-profile.png)
 - [Redux Toolkit profile](profiling/redux-toolkit-profile.png)
 
-Bundle analysis:
+Bundle analysis screenshots:
 
 - [Zustand bundle treemap](bundle-analysis/zustand-bundle.png)
 - [Redux Toolkit bundle treemap](bundle-analysis/redux-toolkit-bundle.png)
 
-## Docker
+## Results
 
-Build and serve the Redux Toolkit version with Docker Compose:
-
-```bash
-docker compose up --build -d
-```
-
-The app will be available on the exposed port defined in `docker-compose.yml`.
-
-### Docker troubleshooting
-
-If `docker compose up --build` fails with a pipe/daemon error (for example on Windows: "failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine"), follow these steps:
-
-1. Open Docker Desktop and wait until the status shows the engine is running ("Docker is running" / "Engine running").
-2. If Docker Desktop does not start, restart the application or the host machine.
-3. From an elevated PowerShell prompt run `docker version` or `docker info` to verify the CLI can connect to the daemon.
-4. If using WSL2 backend on Windows, ensure WSL2 and the selected distro are running and Docker Desktop has WSL integration enabled.
-5. After the daemon is running, re-run:
-
-```powershell
-docker-compose up --build
-```
-
-If you still see failures, run `docker ps` to inspect running containers and their STATUS; review Docker Desktop's logs for errors. For CI, ensure your runner provides a Docker daemon (self-hosted or service) or use an alternative container-build step.
-
-## Findings Summary
-
-- Naive Context is the easiest to start with, but it produces the widest rerender surface.
-- Split Context reduces unrelated rerenders by separating cart, user, and UI state.
-- Zustand keeps the code compact while offering selector-driven subscriptions.
-- Redux Toolkit gives the most structured setup and the strongest debugging story for larger teams.
-
-See `RESULTS.md` for the comparison table and decision guide.
+See [RESULTS.md](RESULTS.md) for the benchmark table and the decision guide.
 
 ## Submission Checklist
 
-Before final submission, verify the following items are present and complete:
+- All three implementations are present and runnable.
+- Required render counters are visible in development builds.
+- `profiling/` contains the three required profiler screenshots.
+- `bundle-analysis/` contains the required bundle analysis screenshots.
+- `RESULTS.md` contains the comparison table and decision guide.
+- `.env.example` documents the required environment variables.
+- `docker compose up --build -d` starts the production container successfully.
 
-- `README.md` contains project overview, folder structure, setup steps, Docker instructions, and a brief findings summary.
-- `RESULTS.md` contains the benchmark table and decision guide.
-- `profiling/` contains profiler screenshots for each implementation (context-optimized, zustand, redux-toolkit).
-- `bundle-analysis/` contains bundle treemaps for Zustand and Redux Toolkit.
-- `.env.example` exists and documents required environment variables.
-- The Docker build completes locally: `docker compose up --build -d` and the site is reachable at the exposed port.
-- Quick manual UI checks: add-to-cart, theme switcher, and no console errors in production build.
-
-If you want, I can run these checks and produce a short verification report.
-
-## Run (production) — Docker Compose
-
-To build and serve the production build (Redux Toolkit app) via Docker Compose:
-
-```bash
-docker compose up --build -d
-
-# then view at http://localhost:8080 (or the port in docker-compose.yml)
-```
-
-Note: During the submission fix we updated the `Dockerfile` to tolerate peer dependency resolution in a clean build by using `npm install --legacy-peer-deps`. The repository's `redux-version/package.json` also bumps `@testing-library/dom` to a compatible version to avoid ERESOLVE errors during CI/docker builds.
-
-If you prefer local development for each implementation, run the `npm install` and `npm run dev` steps shown earlier under each folder.
-
-## Git workflow for submission
-
-Suggested small, meaningful commit strategy for submission (example):
-
-```bash
-# make a focused change
-git add path/to/file
-git commit -m "fix: small bug in CartSidebar render"
-
-# update docs
-git add README.md
-git commit -m "docs: clarify Docker instructions"
-
-# final PR-ready commit
-git add .
-git commit -m "chore: final project submission"
-```
-
-To push your local repository to the submission GitHub repo you provided, add it as a remote and push (you will need push access and authentication):
-
-```bash
-git remote add submission https://github.com/DuvvuLakshmiPrasanna/React-state-management-comparison.git
-git push submission HEAD:main
-```
-
-If you prefer to open a pull request instead, push to a new branch and create the PR from the GitHub web UI:
-
-```bash
-git checkout -b submission-final
-git push submission submission-final
-```
-
-Note: pushing requires valid GitHub credentials (HTTPS or SSH); if the push fails with authentication, use a personal access token or configure SSH keys.
+If you need to verify the repository quickly, start with the Docker command above and then open `http://localhost:8080`.

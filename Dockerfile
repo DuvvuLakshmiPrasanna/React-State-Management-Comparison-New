@@ -1,9 +1,8 @@
 FROM node:20-alpine AS build
-WORKDIR /app
-COPY redux-version/package.json redux-version/package.json
 WORKDIR /app/redux-version
-RUN npm install --legacy-peer-deps
-COPY redux-version/ .
+COPY redux-version/package*.json ./
+RUN npm ci --legacy-peer-deps
+COPY redux-version/ ./
 RUN npm run build
 
 FROM nginx:1.27-alpine
